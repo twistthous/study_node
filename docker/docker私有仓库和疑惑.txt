@@ -1,0 +1,32 @@
+一.搭建私有仓库
+	1.使用私有仓库镜像
+	docker -> registry，公司内部使用的docker仓库
+	
+	2.解决私有仓库不被信任
+	(1)创建相关文件
+		sudo ls /etc/docker 
+		创建文件 daemon.json
+		{"insecure-registries":["ip:port"]}
+	(2)修改docker配置文件
+		sudo vim /lib/systemd/system/docker.service
+		在[service]下添加一行
+		EnvironmentFile=/etc/docker/daemon.json
+	(3)重启docker服务
+		sudo service docker restart
+		
+	3.创建并上传到私有仓库
+	docker build -t ip:port/hello-world .
+	docker push ip:port/hello-world
+
+	4.验证
+	docker registry api
+		ip:5000/..
+	docker pull ip:port/hello-world
+
+二.dockerfile相关
+docker-library
+dockerfile reference
+
+
+1.用WORKDIR,不要RUN cd  
+2. 大部分情况，copy优于add

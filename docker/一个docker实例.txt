@@ -1,0 +1,12 @@
+FROM python2.7
+LABEL ""
+RUN pip install flask
+COPY app.py /app/
+WORKDIR /app
+EXPOSE 5000
+CMD ["python", "app.py"]
+
+docker run -d 
+
+debug时可以进入临时容器
+docker run -it temp_container_id /bin/bash
