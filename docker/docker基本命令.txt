@@ -68,3 +68,46 @@ Docker File
 				让容器以应用程序或者服务的形式运行
 				不会被忽略，一定会执行
 				写一个shell脚本作为entrypoint
+				
+docker container
+	1.进入已有的容器
+		docker exec -it container_id /bin/bash
+		docker exec container_id python
+		exit退出
+	
+	2.停止容器
+		docker stop container_id
+	
+	3.清理没用的容器
+		docker rm $(docker ps -aq)
+	
+	4.带名字的运行
+		docker run -d --name=demo xx/yy
+		docker stop demo
+		docker start demo
+	
+	5.查看信息
+		docker inspect container_id
+		id -> 完整的id
+		
+	6.查看日志
+		docker logs container_id
+
+安装stress 
+	apt-get update && apt-get install -y stress
+	 
+	 (1)查看帮助
+		stress --help
+	 (2) --vm 1 启动一个worker 
+		 -v => debug的输出
+		 --vm 
+		stress --vm 1 -v
+	 
+	创建stress镜像
+	FROM ubuntu
+	RUN apt-get update && apt-get install -y stress
+	ENTRYPOINT ["/usr/bin/stress"]
+	CMD [] //接收docker run传入的参数，CMD参数给ENTRYPOINT使用
+	
+	docker run -it image --vim 1 --verbose
+	

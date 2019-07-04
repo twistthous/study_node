@@ -1,0 +1,37 @@
+docker network
+	单机
+		1.Bridge Network
+		2.Host Network
+		3.None Network
+		
+	多级
+		1.Overlay Network
+		
+Vagrant
+	1.Vagrantfile
+	  
+
+基础的网络概念
+	网络地址转换 -> NAT
+	ip 检查ip可达性
+	telnet 验证服务可用性
+	wireshark抓包工具
+	
+创建network namespace 
+	1.sudo ip netns list
+	2.sudo ip netns delete test1
+	3.sudo ip netns add test1
+	4.sudo ip netns exec test1 ip a
+	5.ip link
+	6.sudo ip netns exec test1 ip link //端口是down
+	7.sudo ip netns exec test1 ip link set dev lo up //启动端口
+	8.创建veth pair,给两个namespace
+	sudo ip link add veth-test1 type veth peer name veth-test2
+	sudo ip link set veth-test1 netns test1
+	sudo ip netns exec test1 ip link
+	sudo ip link set veth-test2 netns test2
+	sudo ip netns exec test1 addr add 192.168.1.1/24 dev veth-test1
+	sudo ip netns exec test2 addr add 192.168.1.2/24 dev veth-test2
+	sudo ip netns exec test1 ip link set dev veth-test1 up
+	sudo ip netns exec test2 ip link set dev veth-test2 up
+	sudo ip netns exec tes1 ip link
