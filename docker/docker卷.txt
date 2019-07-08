@@ -1,0 +1,25 @@
+image layer 只读
+container layer 写数据
+	只限于container，容器停掉，数据就会消失
+	可以把数据写到外挂的存储
+	
+	(1)基于本地文件系统的Volume。可以在执行Docker create或者Docker run时，
+	通过-v参数将主机目录作为容器的数据卷。这部分功能就是基于本地文件系统
+	的Volume管理
+	(2)基于plugin的Volume，支持第三方的存储方案，比如NAS,aws
+	
+	volume的类型
+	1.受管理的data volume，由docker后台自动创建
+		(1)位置是固定的
+	
+	2.绑定挂在的Volume,具体挂载位置可以由客户指定
+		
+		
+docker volume ls
+docker volume rmove xx
+docker volume inspect
+sudo docker run -d -v mysql:/var/lib/mysql --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql
+
+Bind Mouting 第二种持久化
+docker run -v /home/aaa:/root/aaa
+数据实时同步 

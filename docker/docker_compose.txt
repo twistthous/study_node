@@ -1,0 +1,49 @@
+docker compose
+	(1)是基于docker的命令行工具
+	(2)这个工具可以通过一个yml文件定义多容器的docker应用
+	(3)通过一条命令就可以根据yml文件的定义去创建或者管理多个容器
+	
+	docker-compose.yml(到现在为止有三个版本，推荐version3)
+		(1)service
+			1)一个service代表一个container，这个container可以从dockerhub的
+			image来创建，或者从本地的Dockerfile build出来的image创建
+			
+			2)service的启动类似docker run，我们可以给其指定network和volume
+			，可以给service指定network和volume的引用
+			
+			示例一
+			service:
+				db: //一个叫db的container
+					image: postgres:9.4
+					volumes:
+						- "db-data:/var/lib/postgresql/data"
+					networks:
+						- back-tier
+			docker run -d --network back-tier -v db-data:/var/.. post:9.4
+			
+			示例二
+			services:
+				worker:
+					build: ./worker(在本地目录build)
+					links:
+						- db
+						- redis
+					networks:
+						- back-tier
+						
+			示例三
+				volumes:
+					db-data: 
+				docker volume create db-data
+				
+			示例四
+				networks:
+					font-tier: 
+						driver：bridge
+					back-tier:
+						driver: bridge
+			
+			docker network create -d bridge back-tier
+				
+		(2)networks
+		(3)volumes
