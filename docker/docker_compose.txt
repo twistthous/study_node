@@ -3,7 +3,7 @@ docker compose
 	(2)这个工具可以通过一个yml文件定义多容器的docker应用
 	(3)通过一条命令就可以根据yml文件的定义去创建或者管理多个容器
 	
-	docker-compose.yml(到现在为止有三个版本，推荐version3)
+	1.docker-compose.yml(到现在为止有三个版本，推荐version3)
 		(1)service
 			1)一个service代表一个container，这个container可以从dockerhub的
 			image来创建，或者从本地的Dockerfile build出来的image创建
@@ -45,5 +45,34 @@ docker compose
 			
 			docker network create -d bridge back-tier
 				
+			示例五
+				web:
+					build:
+						context: .
+						dockerfile: Dockerfile
+					ports:
+						-8080:5000
+					environment:
+						REDIS_HOST: redis
 		(2)networks
 		(3)volumes
+	
+	2.docker compose安装(官网上有，windows和mac免安装)
+		(1)sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+		(2)sudo chmod +x /usr/local/bin/docker-compose
+		(3)docker-compose --version
+		(4)docker-compose up //把yml文件定义的内容启动-f指定文件，默认docker-compose.ym;
+			docker-compose -f docker-compose.yml up
+			docker-compose up -d
+		(5)docker-compose
+				stop 停止容器
+				down 停止容器并删除
+				
+				ps 打印当期运行的容器
+				images 打印当期镜像
+				
+			docker-compose exec service_name bash //进入容器的命令行模式
+		
+		(6)docker-compose up --scale web-3 -d 启动三个web服务，其他的正常启动
+		(7)可以通过docker-compose build事先构建镜像
+		
