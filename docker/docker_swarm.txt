@@ -1,0 +1,44 @@
+docker swarm
+	1.怎么管理这么多容器
+	2.怎么能方便的横向扩展
+	3.如果容器down了，怎么能自动回复
+	4.如何去更新容器而不影响业务
+	5.如何去监控追踪这些容器
+	6.怎么去调度容器的创建
+	7.如何保护隐私数据
+	
+	swarm  节点有两种角色
+		(1)Manager
+			集群的大脑 ruft协议做的同步
+		(2)worker
+			实际干活的节点，gossip network做同步
+			
+		Service和Replicas
+			一个service代表了一个容器及其扩展，负责调度
+				3 nginx replicas
+			一个replicas是一个容器
+				task
+				container
+				
+	
+	docker swarm命令
+		docker swarm init --advertise-addr=本地ip //先运行的是manager节点
+		在其他节点输入创建成功后提示的命令
+		
+		docker node ls //显示当前swarm的节点
+		
+		play-with-docker  https://labs.play-with-docker.com
+		
+	service的横向扩展
+		docker service create(类似docker run)
+		docker service create --name demo busybox sh - c ""
+		docker service ps demo
+		docker ps 
+		docker service ls 
+		//扩展
+		docker service scale demo=5
+		
+		docker rm -f xx ==> 容器被杀死后，会再启动一个
+		
+		docker service rm demo 
+	 
