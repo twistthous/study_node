@@ -1,0 +1,81 @@
+Java调优
+	1.jvm参数类型
+		(1) 标准参数
+			-help
+			-server
+			-client
+			-version
+			-showversion
+			-cp
+			-classpath
+		
+		(2) X参数(非标准化参数，jvm各版本可能会有变化，但是变化的比较小)
+			-Xint 解释执行
+			-Xcomp 第一次使用就编译成本地代码
+			-Xmixed 混合模式，Jvm自己来决定是否编译成本地代码
+		
+		(3) XX参数
+			(非标准化转化参数，相对不稳定，主要用于JVM调优和debug)
+			1)Boolean类型
+				格式: -XX:[+-]<name>表示启用或禁用name熟悉
+				比如：-XX:+UseConcMarkSweepGc
+					  -XX:+UseG1GC
+			2)非Boolean类型
+				格式：-XX:<name>=<value>表示name属性的值就是value
+				比如：-XX:MaxGCPauseMillis=500
+					  -XX:GCTimeRatio=19
+					 
+					 下面的两个是-xx参数
+					 -Xmx => -XX:InitialHeapSize 
+					 -Xms => -XX:MaxHeapSize
+	
+	2.查看JVM运行时参数
+		-XX:+PrintFlagsInitial 查看初始值
+			= 表示默认值
+			:= 表示被用户或者JVM修改后的值
+		-XX:+PrintFlagsFinal 查看最终值
+		-XX:+UnlockExperimentalVMOptions 解锁实验参数
+		
+		(1)jps 
+		(2)jinfo 查看已经在运行的jvm信息
+		(3)jstat
+			1.类装载
+			2.垃圾收集
+			3.JIT编译
+			
+			JVM的内存结构
+				堆区
+					young
+						S0 + S1(同一时间点只有一个启用)
+						Eden
+					old
+				非堆区
+					Metaspace
+						CCS
+						CodeCache
+			
+			options: -class, -compiler, -gc, -printcompilation
+			
+			jstat -class 3176 1000 10 ==> 1000毫秒一次，一共输出十次，3176是pid
+			jstat -gc
+				
+					S0C,S1C,S0U,S1U:S0和S1的总量与使用量
+					EC,EU:Eden区总量与使用量
+					OC,OU:Old区总量与使用量
+					MC,MU:Metaaspace区总量与使用量（1.6没有这个概念）
+					CCSC,CCSU:压缩空间总量与使用量（对象默认分配到队里，对象会有一个指针指向自己的class）
+					YGC,YGCT:YoungGc的次数与空间
+					FGC,FGCT:FullGC的次数与时间
+					GCT:总的GC时间
+				  -gcutil
+				  -gccause
+				  -gcnew
+				  -gcold
+				  
+				  
+		(4)jmap + MAT 内存溢出
+			
+			1)导出内存映像文件
+				内存溢出自动导出
+					-XX:+HeapDumpOnOutOfMemoryError
+					-XX:HeapDumpPath=./
